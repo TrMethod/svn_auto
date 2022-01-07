@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>svn_auto</title>
+    <link rel="shortcut icon" href="./image/icon.ico" type="image/x-icon">
+    <link rel="icon" href="./image/icon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="./css/index.css">
+    <script src="./lib/vue2.js"></script>
+  </head>
+  <body >
+    <div id="app">
+      <div class="header">
+        <a class="logo" href="#">SVN 自动提交工具</a>
+      </div>
+      
+      <div>
+        <span>跟踪目录: </span><br>
+        <input class="in1" type="text" placeholder="输入跟踪目录绝对路径" v-model="dir"> <br>
+        <a class="btn" @click="updateCommitDir">更新跟踪目录</a><br>
+        <span>累次文件: </span><br>
+        <input class="in1" type="text" placeholder="输入累次文件绝对路径" v-model="file"> <br>
+        <a class="btn" @click="updateCommitFile">更新累次文件</a><br>
+        <p> <strong>说明</strong>：跟踪目录/累次文件必须已经提交过SVN, svn.exe已经配置到环境变量。程序启动之后如果当日未提交过
+          ，自动更新并提交跟踪目录/累次文件一次，其中累次文件内容有变动直接提交，无变动默认会在文件尾追加一个换行符，然后提交 
+          。 跟踪目录/累次文件可以在项目的config.json提前配置, 也可以不配置在此更新。跟踪目录/文件可以为空，为空不会提交不会更新。
+        </p>
+      </div>
+     
+      <div>
+        <span>提交信息:</span> <br>
+        <p class="info" v-html="commitInfo"></p>
+      </div>
+      
+      <div>
+        <span>更新信息:</span> <br>
+        <p class="info" v-html="updateInfo"></p>
+      </div>
+    
+      <div class="tips" id="tips">
+        <a class="tip-info" >{{msg}}</a>
+      </div>
+    </div>
+
+  </body>
+
+  <script>
+
+    let {ipcRenderer} = require("electron")
+    
+    let vm = new Vue({
+      el: "#app",
+      data: {
+        hello:"hello", 
+        commitInfo:"",
+        updateInfo:"",
+        file:"",
+        dir:"",
+        msg:""
+      },
+      methods: {
+        updateCommitFile(){
+          //alert("ok");
+          ipcRenderer.send("updateFile", this.$data.file);
+        },
+
+        updateCommitDir(){
+          ipcRenderer.send("updateDir", this.$data.dir);
+        }
+      }
+    })
+
+    // 监听主进程发过来的事件
+    ipcRenderer.on("update-info", function (event, args) {
+        console.log("update-info" + args)
+        console.log(vm)
+        let web = args.replace("\n", "<br>");
+        vm.$data.updateInfo = web;
+    })
+
+    ipcRenderer.on("commit-info", function (event, args) {
+        console.log("commit-info" + args)
+        console.log(vm)
+        let web = args.replace("\n", "<br>");
+        let res = web.replace("Committed", "<span class='committed'>Committed</span>")
+        vm.$data.commitInfo = res;
+    })
+
+    ipcRenderer.on("file-info", function (event, args) {
+        console.log("file-info" + args)
+        console.log(vm)
+        vm.$data.file = args.file;
+        vm.$data.dir = args.dir;
+    })
+
+    // TODO: updateFile-r
+    ipcRenderer.on("updateFile-r", function (event, args) {
+        // 跟踪文件更新成功，同步提交中！
+        if(vm.$data.file == ""){
+          vm.$data.msg = "累次文件更新成功"
+        }else{
+          vm.$data.msg = "累次文件更新成功，同步提交中！"
+        }
+        console.log("updateFile-r" + args)
+        let el = document.getElementById("tips")
+        el.style.display = "block";
+        setTimeout(function () {
+          el.style.display = "none"
+        }, 10000)
+    })
+
+    ipcRenderer.on("updateDir-reply", function (event, args) {
+        // 跟踪文件更新成功，同步提交中！
+        if(vm.$data.dir == ""){
+          vm.$data.msg = "跟踪目录更新成功"
+        }else{
+          vm.$data.msg = "跟踪目录更新成功，同步提交中！"
+        }
+      
+        console.log("updateFile-r" + args)
+        let el = document.getElementById("tips")
+        el.style.display = "block";
+        setTimeout(function () {
+          el.style.display = "none"
+        }, 8000)
+    })
+
+  </script>
+</html>

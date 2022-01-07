@@ -1,0 +1,144 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  color: #222;
+  font-size: 62.5%;
+}
+
+body {
+  /* Roboto, Helvetica, Arial, sans-serif*/
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  width: 100%;
+  height: 100vh;
+  background-color:#fff;
+  /* background-image: linear-gradient(-225deg, rgb(111, 86, 145), rgb(141, 101, 173), rgb(128, 68, 177)); */
+}
+
+#app{
+  padding: 2rem 10%;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  font-size: 1.6rem;
+}
+
+span{
+  display:block;
+  margin-top:2rem;
+  font-size: 1.6rem;
+}
+
+
+
+.header .logo{
+  display:block;
+  margin-top:1rem;
+  margin-left: 0;
+  text-align:left;
+  font-size:2.8rem;
+  text-decoration: none;
+}
+
+
+
+p{
+  font-size: 1.6rem;
+  margin-top: 2rem;
+}
+
+
+strong{
+  font-size: 1.6rem;
+}
+
+a{
+  font-size: 1.6rem;
+  margin-top: 2rem;
+  margin-left: 3rem;
+}
+
+
+.small{
+  font-size: 1.8rem;
+  font-weight: bold;
+  color:#444;
+}
+
+.little{
+  display: inline-block;
+  margin-top: 1rem;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: green;
+  letter-spacing: .1rem;
+}
+
+.in1{
+  font-size: 1.6rem;
+  margin-top: 2rem;
+  padding: .8rem 1rem;
+  border: .1rem #eee solid;
+  outline: none;
+  text-align: left;
+  background-color: #fff;
+  color:#333;
+  width: 100%;
+  min-width: 30rem;
+}
+
+.btn{
+  display: inline-block;
+  margin-top: 2rem;
+  padding: 0.7rem 2.5rem;
+  background-color: #1890ff;
+  letter-spacing: .2rem;
+  margin-left: 0;
+  color: #fff;
+  font-weight: letter;
+}
+
+
+.tip{
+  color: rgb(230, 39, 39);
+  font-size:2.2rem;
+}
+
+.btn:hover{
+  /* letter-spacing: .5rem; */
+  background-color: #40a9ff;
+  cursor: pointer;
+}
+
+.in1:focus{
+  outline: .2rem #40a9ff solid;
+}
+
+.info{
+  color: #333;
+}
+
+
+.committed{
+  font-size: 1.8rem;
+  color: green;
+}
+
+.tips{
+  position: absolute;
+  top: 8rem;
+  left: 50%;
+  margin-left: -10rem;
+  padding: .8rem 1rem;
+  width: 30rem;
+  background-color: #f6ffed;
+  border: 1px solid #bae7ff;
+  transition: 1s linear;
+  display: none;
+}
+
+.tip-info{
+  color:#333;
+  user-select: none;
+  font-size: 1.4rem;
+}
